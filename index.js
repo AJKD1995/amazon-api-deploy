@@ -1,5 +1,3 @@
-const { onRequest } = require("firebase-functions/v2/https");
-const logger = require("firebase-functions/logger");
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -45,11 +43,15 @@ app.post("/payment/create", async (req, res) => {
       clientSecret: paymentIntent.client_secret,
     });
   } catch (error) {
-    logger.error("Stripe Error:", error);
+    console.error("Stripe Error:", error);
     return res.status(500).json({
       message: error.message,
     });
   }
 });
 
-exports.api = onRequest(app);
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
